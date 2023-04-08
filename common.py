@@ -15,3 +15,10 @@ def assertTuple(testTuple):
 def assertTuples(testData):
     for tup in testData:
         assertTuple(tup)
+
+def mapCounter(array, func):
+    count = 0
+    for line in array:  
+        if func(line):
+            count += 1
+    return count

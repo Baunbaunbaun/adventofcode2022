@@ -1,7 +1,5 @@
 import numpy as np
 from common import returnDataForDay
-from common import assertTuples
-
 data = returnDataForDay(__file__)
 
 def splitInTwoElves(string:str):
@@ -11,7 +9,7 @@ def split2ElvesIn4Sections(elfTuple:str):
     elf1, elf2 = elfTuple
     return np.array(elf1.split('-'), dtype=np.uint16), np.array(elf2.split('-'), dtype=np.uint16)
 
-def doSectionsOverlap(elfTuple) -> bool:
+def doSectionsTotallyOverlap(elfTuple) -> bool:
     elf1, elf2 = elfTuple
     row1 = elf1 > elf2
     row2 = elf1 < elf2
@@ -20,22 +18,24 @@ def doSectionsOverlap(elfTuple) -> bool:
 def countOverLaps(dataInput):
     count = 0
     for line in dataInput:  
-        if doSectionsOverlap(split2ElvesIn4Sections(splitInTwoElves(line))):
+        if doSectionsTotallyOverlap(split2ElvesIn4Sections(splitInTwoElves(line))):
             count += 1
     return count
 
-print(countOverLaps(data))
+print('In how many assignment pairs does one range fully contain the other? ', countOverLaps(data))
     
+# PART 2 ###################################################
 
-
-
-
-
-
-###################################################
-
-testData = [((7,8), '7-50,8-33')]
-
-#assertTuples(testData)
-
-
+def doSectionsOverlap(elfTuple) -> bool:
+    elf1, elf2 = elfTuple
+    return not ((elf1[0] < elf2[0] and elf1[1] < elf2[0]) or 
+                (elf1[0] > elf2[1] and elf1[1] > elf2[1]))
+    
+def countAllOverLaps(data):
+    count = 0
+    for line in data:  
+        if doSectionsOverlap(split2ElvesIn4Sections(splitInTwoElves(line))):
+            count += 1
+    return count
+ 
+print('In how many assignment pairs do the ranges overlap? ', countAllOverLaps(data))
