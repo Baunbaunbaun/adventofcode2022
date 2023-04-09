@@ -30,6 +30,45 @@ def arrangeStartDataInStacks(startData):
 
     return removeEmptyLstAndReverseRemaining(stackLstTemp)
 
-stackLst = arrangeStartDataInStacks(startData)
+def fromStrToMove(str):
+    lst = str.split(' ')
+    return (int(lst[1]),int(lst[3])-1,int(lst[5])-1)
 
-printLst(stackLst)
+def addToStack(stack:list, crates:list):
+    copy = stack.copy()
+    for c in crates: 
+        copy.append(c)
+    return copy
+
+def removeFromStack(stack, amount):
+    crates = []
+    for i in range(amount):
+        crates.append(stack.pop())
+    return stack, crates  
+
+def moveCrates(ship, move):
+    shipCopy = ship.copy()
+    amount, fromStack, toStack = move
+    stack = ship[fromStack].copy()
+
+    ship[fromStack], crates = removeFromStack(stack, amount)
+    ship[toStack] = addToStack(shipCopy[toStack], crates)
+
+    return shipCopy
+
+def printTop(ship):
+    shipCopy = ship.copy()
+    out = ""
+    for stack in shipCopy:
+        out = out + stack[-1:][0]
+    print(out)
+
+ship = arrangeStartDataInStacks(startData)
+
+for str in rearrangementProcedure:
+    move = fromStrToMove(str)
+    moveCrates(ship,move)
+
+printLst(ship)
+print()
+printTop(ship)
