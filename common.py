@@ -1,6 +1,6 @@
 import os
 
-def returnDataForDay(filePath:str):
+def getData(filePath:str):
     dir = os.path.join(os.path.dirname(__file__), 'data')
     fileNameWithType = filePath.split('/')[-1]
     fileName = fileNameWithType.split('.')[0]
