@@ -65,9 +65,22 @@ def printTop(ship):
 
 ship = arrangeStartDataInStacks(startData)
 
+# PART 2 ###################################################
+
+def moveCrates2(ship, move):
+    shipCopy = ship.copy()
+    amount, fromStack, toStack = move
+    stack = ship[fromStack].copy()
+
+    ship[fromStack], crates = removeFromStack(stack, amount)
+    crates.reverse() # only change to solve part 2
+    ship[toStack] = addToStack(shipCopy[toStack], crates)
+
+    return shipCopy
+
 for str in rearrangementProcedure:
     move = fromStrToMove(str)
-    moveCrates(ship,move)
+    moveCrates2(ship,move)
 
 printLst(ship)
 print()
