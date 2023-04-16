@@ -1,10 +1,10 @@
 import os
 
-def getData(filePath:str):
+def getData(filePath:str, test:str = ''):
     dir = os.path.join(os.path.dirname(__file__), 'data')
     fileNameWithType = filePath.split('/')[-1]
     fileName = fileNameWithType.split('.')[0]
-    with open(f"{dir}/{fileName}.txt","r") as file:
+    with open(f"{dir}/{fileName}{test}.txt","r") as file:
         data = file.readlines()
         return data
 
