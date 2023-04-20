@@ -1,4 +1,4 @@
-from common import getData
+from common import getData, printLst
 
 data = getData(__file__)[1:]
 testData = getData(__file__, 'test')[1:]
@@ -20,7 +20,7 @@ class dirObject:
         self.children = []
         dirStack.append(self)
 
-    def getSize(self):
+    def getSize(self) -> int:
         if self.children == []:
             return self.size
         self.size = 0
@@ -46,7 +46,7 @@ class dir(dirObject):
 class file(dirObject): 
     def __init__(self, name, size, parent):
         super().__init__(name, size)
-        self.size = size
+        self.size = int(size)
         self.parent = parent
         self.parent.children.append(self)
         self.isDir = False
@@ -86,8 +86,10 @@ r = getDirInStack('root')
 print('root size = ',getDirInStack('root').getSize())
 print('root children = ', len(getDirInStack('root').children))
 
+"""
 count = 0
 sum = 0
+
 for d in dirStack[1:]:
     if (int(d.size) <= 100000 and 
         d.isDir):
@@ -97,3 +99,21 @@ for d in dirStack[1:]:
 
 print('Items max 100K = ', count)
 print('SUM = ', sum)
+
+"""
+
+# PART 2 ###################################################
+
+deleteThisAmount = abs(40000000-int(getDirInStack('root').getSize()))
+print('Please delete a dir with min. this size = ', deleteThisAmount)
+
+possibleDirToDelete = []
+
+for d in dirStack[1:]:
+    if ( d.getSize() > deleteThisAmount and 
+        d.isDir):
+        possibleDirToDelete.append(d.getSize())
+
+possibleDirToDelete.sort()
+
+print('Smallest possible dir to delete', possibleDirToDelete[0] )
