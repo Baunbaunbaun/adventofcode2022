@@ -86,8 +86,26 @@ def getNumberOfVisibleTrees(forrest):
     verticalVisible = np.rot90(get2dArrayWithVisibleTrees(rotData), k=1, axes=(1,0))
     return (np.logical_and(horizontalVisible, verticalVisible)).sum()
 
+def getVisibleTrees(treeLine):
 
-print(getNumberOfVisibleTrees(data))
+    visibleTrees = []
+    visibleHeight = 0
+    for t in treeLine:
+        if t > visibleHeight:
+            visibleHeight = t
+            visibleTrees.append(1)
+        else: 
+            visibleTrees.append(0)
+    return visibleTrees
+
+#print(getNumberOfVisibleTrees(data))
+npData = fromStrToNpData(data)
+
+for l in npData: 
+    print(l)
+    print(getVisibleTrees(l))
+
+
 
 # PART 2 ###################################################
 
