@@ -1,14 +1,14 @@
 from common import getData, printLst, removeNewLine
 import numpy as np
 
-#data = removeNewLine(getData(__file__))
-data = removeNewLine(getData(__file__, 'test'))
+data = removeNewLine(getData(__file__))
+#data = removeNewLine(getData(__file__, 'test'))
 
 # PART 1 ###################################################
 
 w = len(data[0])
 h = len(data)
-print(w, ' X ', h)
+print('Forrest size: ', w, ' X ', h)
 
 def fromStrToIntArray(str):
     out = []
@@ -42,19 +42,24 @@ def getVisibleTreesFromOneDirection(forrest):
     return boolForrest
 
 def getAllVisibleTreesInForrest(forrest):
-    boolForrest4Directions = []
+    boolForrestAllDirections = []
     for direction in range(4):
-        boolForrest = getVisibleTreesFromOneDirection(np.rot90(forrest, direction+1))
-        boolForrest4Directions.append(np.rot90(boolForrest, -1*direction+1))
-    return np.asarray(boolForrest4Directions)
+        forrestRotated = np.rot90(forrest, direction)
+        boolForrest = getVisibleTreesFromOneDirection(forrestRotated)
+        boolForrestNormal = np.rot90(boolForrest, -1*direction)
+        boolForrestAllDirections.append(boolForrestNormal)
+    return np.asarray(boolForrestAllDirections)
 
+def countVisibleTrees(forrest):
+    visibleTreesInForrest = getAllVisibleTreesInForrest(forrest)
 
-x = getAllVisibleTreesInForrest(npData)
-bool0and1 = np.logical_and(x[0],x[1])
-bool2and3 = np.logical_and(x[2],x[3])
-boolAll = np.logical_and(bool0and1, bool2and3)
-print(boolAll.sum())
+    bool0and1 = np.logical_or(visibleTreesInForrest[0],visibleTreesInForrest[1])
+    bool2and3 = np.logical_or(visibleTreesInForrest[2],visibleTreesInForrest[3])
+    boolAll = np.logical_or(bool0and1, bool2and3)
 
+    return boolAll.sum()
+
+print('Visible trees: ', countVisibleTrees(npData))
 
 # PART 2 ###################################################
 
