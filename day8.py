@@ -1,8 +1,8 @@
 from common import getData, printLst, removeNewLine
 import numpy as np
 
-#data = removeNewLine(getData(__file__))
-data = removeNewLine(getData(__file__, 'test'))
+data = removeNewLine(getData(__file__))
+# data = removeNewLine(getData(__file__, 'test'))
 
 # PART 1 ###################################################
 
@@ -74,26 +74,30 @@ def getScenicScoreForOneTree(tree:int, index:int, treeLine:list):
     lookLeft = list(treeLine[:index])
     lookLeft.reverse()
     lookRight = list(treeLine[index+1:])
-    return getScenicScoreOneDirection(tree, lookLeft) * getScenicScoreOneDirection(tree, lookRight)
+    leftScore = getScenicScoreOneDirection(tree, lookLeft)
+    rightScore = getScenicScoreOneDirection(tree, lookRight)
+    return leftScore * rightScore
 
 def getScenicScoreOneDirection(tree:int, treeLineSegment:list):
     visibleTreesSum = 0
     for t in treeLineSegment:
-        visibleTreesSum = visibleTreesSum + 1
-        
-        if int(t) >= int(tree): # DER MANGLER AT TAGES HENSYN TIL TRÆ SOM SKYGGER FOR SMÅ TRÆER.ß
+        if int(t) >= int(tree): 
+            visibleTreesSum = visibleTreesSum + 1
             break   
-
+        visibleTreesSum = visibleTreesSum + 1
     return visibleTreesSum
 
 def getScenicScore(row, column, forrest):
     tree = int(forrest[row][column])  
+    def getVerticalScore(tree, row, column, forrest):
+        rotatedForrest = np.rot90(np.asarray(forrest), 1)
+        flippedAndRotatedForrest = rotatedForrest[::-1]
+        # now rows and columns are switched!
+        verticalTreeLine = flippedAndRotatedForrest[column]
+        return getScenicScoreForOneTree(tree, row, verticalTreeLine)
     
-    verticalTreeLine = np.rot90(np.asarray(forrest))[column]
-    verticalScore = getScenicScoreForOneTree(tree, row, verticalTreeLine)
-    horizontalScore = getScenicScoreForOneTree(tree, column, forrest[row])
-    
-    return horizontalScore * verticalScore
+    horizontalScore = getScenicScoreForOneTree(tree, column, forrest[row])    
+    return horizontalScore * getVerticalScore(tree, row, column, forrest)
 
 def getAllScenicScores(forrest):
     w = len(forrest[0])
@@ -104,22 +108,21 @@ def getAllScenicScores(forrest):
     for row in range(h):
         for column in range(w):
             score = getScenicScore(row, column, forrest)
-            print('(x,y) = score', column, row, score)
             scenicScores.append(score)
     return scenicScores
 
 printLst(npData)
+print()
+visibleTreeValues = getAllScenicScores(npData)
+print()
 print(np.max(getAllScenicScores(npData)))
 
 # TESTING ###################################################
-i = 2
-treeLine = '33549'
-tree = treeLine[i]
 
-#score = getScenicScore(3,2,npData)
-#print(score)
+visibleTreesStr = ''
+for i in range(len(visibleTreeValues)):
+    if (i % w == 0):
+        visibleTreesStr = visibleTreesStr + '\n'
+    visibleTreesStr = visibleTreesStr + str(visibleTreeValues[i])
 
-#print(treeLine)
-#score = getScenicScoreForOneTree(tree=tree, index=i, treeLine=treeLine)
-
-#print(score)
+#print(visibleTreesStr)
