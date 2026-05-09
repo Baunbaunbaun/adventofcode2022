@@ -1,8 +1,8 @@
 # adventofcode2022
 
-I have wanted to solve Advent Of Code for a long time. 
+I wanted for a long time to solve Advent Of Code. 
 But december is always too busy for me. 
-So now I take my time and solve the 25 days of each 2 assignments in my own pace and without getting help. 
+So I took my time and solved 8 out of the 25 days of each 2 assignments in my own pace and without getting help. 
 
 I am coding in Python and it works like a charm. I am happy to be reunited with Numpy and other packages :-)
 
